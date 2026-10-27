@@ -1,0 +1,14 @@
+[Bb]in/
+[Oo]bj/
+.vs/
+.idea/
+.vscode/
+.DS_Store
+.env
+.env.*
+*.user
+*.suo
+*.log
+*.tmp
+output/
+.work/

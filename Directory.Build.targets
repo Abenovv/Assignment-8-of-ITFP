@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <PlannerNativeRid Condition="'$(PlannerNativeRid)' == ''">$(NETCoreSdkRuntimeIdentifier)</PlannerNativeRid>
+    <PlannerNativeName Condition="$([System.String]::Copy('$(PlannerNativeRid)').StartsWith('win-'))">planner_native.dll</PlannerNativeName>
+    <PlannerNativeName Condition="$([System.String]::Copy('$(PlannerNativeRid)').StartsWith('osx-'))">libplanner_native.dylib</PlannerNativeName>
+    <PlannerNativeName Condition="$([System.String]::Copy('$(PlannerNativeRid)').StartsWith('linux-'))">libplanner_native.so</PlannerNativeName>
+    <PlannerNativeAsset>$(MSBuildThisFileDirectory)runtimes/$(PlannerNativeRid)/native/$(PlannerNativeName)</PlannerNativeAsset>
+  </PropertyGroup>
+  <Target Name="CheckPlannerNative" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(PlannerNativeName)' == '' Or !Exists('$(PlannerNativeAsset)')"
+           Text="Native planner library missing for $(PlannerNativeRid). Run native/build.ps1 on Windows or sh native/build.sh on macOS/Linux, then rebuild. Windows x64 binary is included in runtimes/win-x64/native." />
+  </Target>
+  <Target Name="CopyPlannerNative" AfterTargets="Build">
+    <Copy SourceFiles="$(PlannerNativeAsset)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
